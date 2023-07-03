@@ -38,6 +38,9 @@ const preprocess = (source, modelWidth, modelHeight) => {
   return [input, xRatio, yRatio];
 };
 
+
+
+
 /**
  * Function run inference and do detection from source.
  * @param {HTMLImageElement|HTMLVideoElement} source
@@ -89,8 +92,8 @@ export const detect = async (source, model, canvasRef, callback = () => {}) => {
   console.log(scores_data);
   console.log(landmarks_data);
 
-  renderBoxes(canvasRef, boxes_data, scores_data, classes_data, [xRatio, yRatio]); // render boxes
-  tf.dispose([res, transRes, boxes, scores, classes, nms]); // clear memory
+  renderBoxes(canvasRef, landmarks_data , xRatio, yRatio); // render boxes
+  tf.dispose([res, transRes, boxes, scores, nms]); // clear memory
 
   callback();
 

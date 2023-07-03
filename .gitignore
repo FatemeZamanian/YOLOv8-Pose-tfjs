@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 public/yolov8n-pose_web_model
+public/yolov8m-pose_web_model
