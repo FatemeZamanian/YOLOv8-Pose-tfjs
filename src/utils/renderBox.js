@@ -8,10 +8,9 @@
  * @param {Array} classes_data class array
  * @param {Array[Number]} ratios boxes ratio [xRatio, yRatio]
  */
-export const renderBoxes = (canvasRef, keypointData,xi,yi) => {
+export const renderBoxes = (canvasRef, keypointData,boxes_data,scores_data,xi,yi) => {
   const ctx = canvasRef.getContext("2d");
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clean canvas
-
   const colors = {
     nose: 'red',
     leftEye: 'blue',
@@ -31,6 +30,36 @@ export const renderBoxes = (canvasRef, keypointData,xi,yi) => {
     leftAnkle: 'brown',
     rightAnkle: 'black'
   };
+  for (let i = 0; i < scores_data.length; ++i) {
+    // filter based on class threshold
+    const score = (scores_data[i] * 100).toFixed(1);
+    let [y1, x1, y2, x2] = boxes_data.slice(i * 4, (i + 1) * 4);
+    x1 *= xi;
+    x2 *= xi;
+    y1 *= yi;
+    y2 *= yi;
+    const width = x2 - x1;
+    const height = y2 - y1;
+
+    // draw box.
+    ctx.fillStyle = colors['nose']
+    // ctx.fillRect(x1, y1, width, height);
+
+    // draw border box.
+    ctx.strokeStyle = colors['nose']
+    ctx.lineWidth = Math.max(Math.min(ctx.canvas.width, ctx.canvas.height) / 200, 2.5);
+    ctx.strokeRect(x1, y1, width, height);
+
+   
+    // ctx.fillRect(
+    //   x1 - 1,
+    //   y1,
+    //   ctx.lineWidth,
+    //   ctx.lineWidth
+    // );
+  }
+
+ 
     for (let i = 0; i < keypointData.length; i += 3) {
       const x = keypointData[i] * xi;
       const y = keypointData[i + 1] * yi;
