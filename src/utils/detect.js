@@ -39,8 +39,6 @@ const preprocess = (source, modelWidth, modelHeight) => {
 };
 
 
-
-
 /**
  * Function run inference and do detection from source.
  * @param {HTMLImageElement|HTMLVideoElement} source
@@ -48,7 +46,7 @@ const preprocess = (source, modelWidth, modelHeight) => {
  * @param {HTMLCanvasElement} canvasRef canvas reference
  * @param {VoidFunction} callback function to run after detection process
  */
-export const detect = async (source, model, canvasRef, callback = () => {}) => {
+export const detect = async (source, model, canvasRef, callback = () => { }) => {
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3); // get model width and height
 
   tf.engine().startScope(); // start scoping tf engine
@@ -79,34 +77,21 @@ export const detect = async (source, model, canvasRef, callback = () => {}) => {
     const rawScores = transRes.slice([0, 0, 4], [-1, -1, 1]).squeeze(); // class scores
     return rawScores;
   }); // get scores
-  // console.log(scores.arraySync())
 
-
-  const besco = tf.tidy(() => {
-    const rawScores = transRes.slice([0, 0, 5], [-1, -1, 1]).squeeze(); // class scores
-    return rawScores;
-  }); // get scores
-
-  const sesco = tf.tidy(() => {
-    const rawScores = transRes.slice([0, 0, 6], [-1, -1, 1]).squeeze(); // class scores
-    return rawScores;
-  }); // get scores
   const landmarks = tf.tidy(() => {
     return transRes.slice([0, 0, 5], [-1, -1, -1]).squeeze();
   }); // get landmarks
-  // console.log("scores: ",scores.dataSync())
-  // console.log("besco: ",besco.dataSync())
-  // console.log("sesco: ",sesco.dataSync())
+
   const nms = await tf.image.nonMaxSuppressionAsync(boxes, scores, 500, 0.45, 0.3); // NMS to filter boxes
 
   const boxes_data = boxes.gather(nms, 0).dataSync(); // indexing boxes by nms index
   const scores_data = scores.gather(nms, 0).dataSync(); // indexing scores by nms index
-  const landmarks_data = landmarks.gather(nms, 0).dataSync(); // indexing classes by nms index
-  
-  // console.log(scores_data);
-  // console.log(landmarks_data);
+  let landmarks_data = landmarks.gather(nms, 0).dataSync(); // indexing classes by nms index
 
-  renderBoxes(canvasRef, landmarks_data,boxes_data,scores_data , xRatio, yRatio); // render boxes
+  // reshape keypoints_data
+  landmarks_data = tf.reshape(landmarks_data, [-1, 3, 17]);
+
+  renderBoxes(canvasRef, landmarks_data, boxes_data, scores_data, xRatio, yRatio); // render boxes
   tf.dispose([res, transRes, boxes, scores, nms]); // clear memory
 
   callback();
