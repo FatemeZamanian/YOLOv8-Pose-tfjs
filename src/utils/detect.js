@@ -2,6 +2,8 @@ import * as tf from "@tensorflow/tfjs";
 import { renderBoxes } from "./renderBox";
 import labels from "./labels.json";
 
+
+
 const numClass = labels.length;
 
 /**
@@ -53,7 +55,7 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
   const [input, xRatio, yRatio] = preprocess(source, modelWidth, modelHeight); // preprocess image
 
   const res = model.net.execute(input); // inference model
-  console.log(res.arraySync()[0][1][0])
+
   const transRes = res.transpose([0, 2, 1]); // transpose result [b, det, n] => [b, n, det]
   const boxes = tf.tidy(() => {
     const w = transRes.slice([0, 0, 2], [-1, -1, 1]); // get width
@@ -78,15 +80,31 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
     return rawScores;
   }); // get scores
 
+
   const landmarks = tf.tidy(() => {
     return transRes.slice([0, 0, 5], [-1, -1, -1]).squeeze();
   }); // get landmarks
+
+
+
+  console.log(scores.dataSync()[0])
+  console.log(scores.dataSync()[20])
+  console.log(scores.dataSync()[80])
+  console.log(scores.dataSync()[1200])
+  console.log(scores.dataSync()[6200])
+
+  // console.log(landmarks.dataSync()[0])
+  // console.log(landmarks.dataSync()[20])
+  // console.log(landmarks.dataSync()[80])
+  // console.log(landmarks.dataSync()[1200])
+  // console.log(landmarks.dataSync()[6200])
 
   const nms = await tf.image.nonMaxSuppressionAsync(boxes, scores, 500, 0.45, 0.3); // NMS to filter boxes
 
   const boxes_data = boxes.gather(nms, 0).dataSync(); // indexing boxes by nms index
   const scores_data = scores.gather(nms, 0).dataSync(); // indexing scores by nms index
   let landmarks_data = landmarks.gather(nms, 0).dataSync(); // indexing classes by nms index
+  // console.log(boxes_data)
 
   // reshape keypoints_data
   landmarks_data = tf.reshape(landmarks_data, [-1, 3, 17]);

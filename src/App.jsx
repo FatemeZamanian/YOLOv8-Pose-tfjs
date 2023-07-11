@@ -32,11 +32,9 @@ const App = () => {
           },
         }
       ); // load model
-
       // warming up model
       const dummyInput = tf.ones(yolov8.inputs[0].shape);
       const warmupResults = yolov8.execute(dummyInput);
-
       setLoading({ loading: false, progress: 1 });
       setModel({
         net: yolov8,
