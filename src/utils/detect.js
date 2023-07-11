@@ -60,6 +60,7 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
   console.log(res.dataSync()[1200])
   console.log(res.dataSync()[6200])
   console.log(res.dataSync()[4800])
+  console.log(res.dataSync()[400])
 
 
   const transRes = res.transpose([0, 2, 1]); // transpose result [b, det, n] => [b, n, det]
