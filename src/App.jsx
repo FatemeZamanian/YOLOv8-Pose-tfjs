@@ -41,6 +41,9 @@ const App = () => {
         inputShape: yolov8.inputs[0].shape,
       }); // set model & input shape
 
+
+      console.log(warmupResults.dataSync()[4000])
+
       tf.dispose([warmupResults, dummyInput]); // cleanup memory
     });
   }, []);
