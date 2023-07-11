@@ -62,6 +62,11 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
     const h = transRes.slice([0, 0, 3], [-1, -1, 1]); // get height
     const x1 = tf.sub(transRes.slice([0, 0, 0], [-1, -1, 1]), tf.div(w, 2)); // x1
     const y1 = tf.sub(transRes.slice([0, 0, 1], [-1, -1, 1]), tf.div(h, 2)); // y1
+    console.log(w.dataSync()[0])
+    console.log(h.dataSync()[20])
+    console.log(x1.dataSync()[80])
+    console.log(y1.dataSync()[1200])
+    console.log(w.dataSync()[6200])
     return tf
       .concat(
         [
@@ -87,11 +92,11 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
 
 
 
-  console.log(scores.dataSync()[0])
-  console.log(scores.dataSync()[20])
-  console.log(scores.dataSync()[80])
-  console.log(scores.dataSync()[1200])
-  console.log(scores.dataSync()[6200])
+  // console.log(scores.dataSync()[0])
+  // console.log(scores.dataSync()[20])
+  // console.log(scores.dataSync()[80])
+  // console.log(scores.dataSync()[1200])
+  // console.log(scores.dataSync()[6200])
 
   // console.log(landmarks.dataSync()[0])
   // console.log(landmarks.dataSync()[20])
