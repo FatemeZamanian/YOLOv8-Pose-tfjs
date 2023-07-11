@@ -56,13 +56,13 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
 
   const res = model.net.execute(input); // inference model
   const transRes = res.transpose([0, 2, 1]); // transpose result [b, det, n] => [b, n, det]
-  console.log(res.dataSync())
+  // console.log(res.dataSync())
   const boxes = tf.tidy(() => {
     const w = transRes.slice([0, 0, 2], [-1, -1, 1]); // get width
     const h = transRes.slice([0, 0, 3], [-1, -1, 1]); // get height
     const x1 = tf.sub(transRes.slice([0, 0, 0], [-1, -1, 1]), tf.div(w, 2)); // x1
     const y1 = tf.sub(transRes.slice([0, 0, 1], [-1, -1, 1]), tf.div(h, 2)); // y1
-    console.log(w,h,x1,y1)
+    console.log("w: ",w.dataSync()[0],"h: ",h.dataSync()[0],"x1: ",x1.dataSync()[0],"y1: ",y1.dataSync()[0])
     return tf
       .concat(
         [
