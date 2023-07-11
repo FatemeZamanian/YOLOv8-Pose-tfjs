@@ -62,6 +62,7 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
     const h = transRes.slice([0, 0, 3], [-1, -1, 1]); // get height
     const x1 = tf.sub(transRes.slice([0, 0, 0], [-1, -1, 1]), tf.div(w, 2)); // x1
     const y1 = tf.sub(transRes.slice([0, 0, 1], [-1, -1, 1]), tf.div(h, 2)); // y1
+    console.log(w,h,x1,y1)
     return tf
       .concat(
         [
