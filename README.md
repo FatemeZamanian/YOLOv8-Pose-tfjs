@@ -4,6 +4,7 @@
   <img src="./sample.jpeg" />
 </p>
 
+[![Node.js CI](https://github.com/FatemeZamanian/YOLOv8-Pose-tfjs/actions/workflows/node.js.yml/badge.svg)](https://github.com/FatemeZamanian/YOLOv8-Pose-tfjs/actions/workflows/node.js.yml)
 ![love](https://img.shields.io/badge/Made%20with-🖤-white)
 ![tensorflow.js](https://img.shields.io/badge/tensorflow.js-white?logo=tensorflow)
 
