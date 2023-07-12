@@ -1,6 +1,6 @@
 {
   "name": "yolov8-pose-tfjs",
-  "description": "Object detection application right in your browser using YOLOv8 and Tensorflow.js",
+  "description": "Pose detection application right in your browser using YOLOv8 and Tensorflow.js",
   "version": "1.0.0",
   "scripts": {
     "start": "vite",
@@ -13,13 +13,13 @@
     "url": "git+https://github.com/FatemeZamanian/YOLOv8-Pose-tfjs.git"
   },
   "keywords": [
-    "object detection",
+    "pose detection",
     "yolov8",
     "javascript",
     "react",
     "tensorflow.js"
   ],
-  "author": "Wahyu Setianto",
+  "author": "Fateme Zamanian",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/FatemeZamanian/YOLOv8-Pose-tfjs/issues"

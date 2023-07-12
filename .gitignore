@@ -29,3 +29,4 @@ yolov8n-pose.pt
 images
 yolov8n-pose.pb
 yolov8n-pose.onnx
+.vscode
