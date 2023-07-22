@@ -47,6 +47,7 @@ const connections = [
 ];
 
 export const renderBoxes = (canvasRef, landmarks_data, boxes_data, scores_data, xi, yi) => {
+  console.log(landmarks_data)
   const ctx = canvasRef.getContext("2d");
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clean canvas
 

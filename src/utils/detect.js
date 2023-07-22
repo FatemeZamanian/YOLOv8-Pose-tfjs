@@ -89,24 +89,13 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
 
 
 
-  // console.log(scores.dataSync()[0])
-  // console.log(scores.dataSync()[20])
-  // console.log(scores.dataSync()[80])
-  // console.log(scores.dataSync()[1200])
-  // console.log(scores.dataSync()[6200])
-
-  // console.log(landmarks.dataSync()[0])
-  // console.log(landmarks.dataSync()[20])
-  // console.log(landmarks.dataSync()[80])
-  // console.log(landmarks.dataSync()[1200])
-  // console.log(landmarks.dataSync()[6200])
-
+  console.log(boxes.dataSync());
   const nms = await tf.image.nonMaxSuppressionAsync(boxes, scores, 500, 0.45, 0.3); // NMS to filter boxes
-
+  console.log(nms.dataSync());
   const boxes_data = boxes.gather(nms, 0).dataSync(); // indexing boxes by nms index
+  console.log(boxes_data);
   const scores_data = scores.gather(nms, 0).dataSync(); // indexing scores by nms index
   let landmarks_data = landmarks.gather(nms, 0).dataSync(); // indexing classes by nms index
-  // console.log(boxes_data)
 
   // reshape keypoints_data
   landmarks_data = tf.reshape(landmarks_data, [-1, 3, 17]);
