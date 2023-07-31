@@ -49,6 +49,8 @@ const preprocess = (source, modelWidth, modelHeight) => {
  * @param {VoidFunction} callback function to run after detection process
  */
 export const detect = async (source, model, canvasRef, callback = () => { }) => {
+
+  console.time("session")
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3); // get model width and height
 
   tf.engine().startScope(); // start scoping tf engine
@@ -87,11 +89,10 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
     return transRes.slice([0, 0, 5], [-1, -1, -1]).squeeze();
   }); // get landmarks
 
-
-
-  console.log(boxes.dataSync());
   const nms = await tf.image.nonMaxSuppressionAsync(boxes, scores, 500, 0.45, 0.3); // NMS to filter boxes
-  console.log(nms.dataSync());
+
+  console.timeEnd("session")
+  
   const boxes_data = boxes.gather(nms, 0).dataSync(); // indexing boxes by nms index
   console.log(boxes_data);
   const scores_data = scores.gather(nms, 0).dataSync(); // indexing scores by nms index
