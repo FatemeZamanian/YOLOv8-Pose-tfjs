@@ -71,8 +71,9 @@ export const renderBoxes = (canvasRef, landmarks_data, boxes_data, scores_data, 
     ctx.strokeRect(x1, y1, width, height);
 
     let keypoints = landmarks_data.slice([i, 0, 0], [1, -1, -1]).reshape([17, 3]).arraySync();
-
+    const conf_threshold = 0.6;
     for (let j = 0; j < keypoints.length; j++) {
+      if (keypoints[j][2] > conf_threshold) {
       const x = keypoints[j][0] * xi;
       const y = keypoints[j][1] * yi;
       const bodyPart = Object.keys(colors)[j];
@@ -81,6 +82,12 @@ export const renderBoxes = (canvasRef, landmarks_data, boxes_data, scores_data, 
       ctx.fillStyle = colors[bodyPart];
       ctx.fill();
       ctx.closePath();
+      keypoints[j][2] = false;
+      }
+      else {
+        keypoints[j][2] = true;
+      }
+
     }
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'white';
@@ -90,12 +97,14 @@ export const renderBoxes = (canvasRef, landmarks_data, boxes_data, scores_data, 
       const y1 = keypoints[Object.keys(colors).indexOf(partA)][1] * yi;
       const x2 = keypoints[Object.keys(colors).indexOf(partB)][0] * xi;
       const y2 = keypoints[Object.keys(colors).indexOf(partB)][1] * yi;
+      if (keypoints[Object.keys(colors).indexOf(partA)][2] && keypoints[Object.keys(colors).indexOf(partB)][2]) {
 
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.lineTo(x2, y2);
       ctx.stroke();
       ctx.closePath();
+      }
     }
   }
 }

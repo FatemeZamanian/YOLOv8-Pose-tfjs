@@ -89,7 +89,7 @@ export const detect = async (source, model, canvasRef, callback = () => { }) => 
     return transRes.slice([0, 0, 5], [-1, -1, -1]).squeeze();
   }); // get landmarks
 
-  const nms = await tf.image.nonMaxSuppressionAsync(boxes, scores, 500, 0.45, 0.3); // NMS to filter boxes
+  const nms = await tf.image.nonMaxSuppressionAsync(boxes, scores, 1, 0.45, 0.3); // NMS to filter boxes
 
   console.timeEnd("session")
   
