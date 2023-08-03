@@ -73,19 +73,21 @@ export const renderBoxes = (canvasRef, landmarks_data, boxes_data, scores_data, 
     let keypoints = landmarks_data.slice([i, 0, 0], [1, -1, -1]).reshape([17, 3]).arraySync();
     const conf_threshold = 0.6;
     for (let j = 0; j < keypoints.length; j++) {
-      if (keypoints[j][2] > conf_threshold) {
+      console.log(keypoints[j])
       const x = keypoints[j][0] * xi;
       const y = keypoints[j][1] * yi;
       const bodyPart = Object.keys(colors)[j];
+      if (keypoints[j][2]< conf_threshold){
       ctx.beginPath();
       ctx.arc(x, y, 5, 0, 2 * Math.PI);
       ctx.fillStyle = colors[bodyPart];
       ctx.fill();
       ctx.closePath();
-      keypoints[j][2] = false;
+      keypoints[j][2] = true;
+
       }
-      else {
-        keypoints[j][2] = true;
+      else{
+        keypoints[j][2] = false;
       }
 
     }
@@ -97,7 +99,7 @@ export const renderBoxes = (canvasRef, landmarks_data, boxes_data, scores_data, 
       const y1 = keypoints[Object.keys(colors).indexOf(partA)][1] * yi;
       const x2 = keypoints[Object.keys(colors).indexOf(partB)][0] * xi;
       const y2 = keypoints[Object.keys(colors).indexOf(partB)][1] * yi;
-      if (keypoints[Object.keys(colors).indexOf(partA)][2] && keypoints[Object.keys(colors).indexOf(partB)][2]) {
+      if (keypoints[Object.keys(colors).indexOf(partA)][2] == true && keypoints[Object.keys(colors).indexOf(partB)][2] == true) {
 
       ctx.beginPath();
       ctx.moveTo(x1, y1);
